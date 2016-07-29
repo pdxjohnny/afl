@@ -373,7 +373,7 @@ static void locate_diffs(u8* ptr1, u8* ptr2, u32 len, s32* first, s32* last) {
   s32 l_loc = -1;
   u32 pos;
 
-  for (pos = 0; pos < len; pos++) {
+  for (pos = 0; pos < len; ++pos) {
 
     if (*(ptr1++) != *(ptr2++)) {
 
@@ -893,10 +893,10 @@ static u32 count_non_255_bytes(u8* mem) {
        case. */
 
     if (v == 0xffffffff) continue;
-    if ((v & FF(0)) != FF(0)) ret++;
-    if ((v & FF(1)) != FF(1)) ret++;
-    if ((v & FF(2)) != FF(2)) ret++;
-    if ((v & FF(3)) != FF(3)) ret++;
+    if ((v & FF(0)) != FF(0)) ++ret;
+    if ((v & FF(1)) != FF(1)) ++ret;
+    if ((v & FF(2)) != FF(2)) ++ret;
+    if ((v & FF(3)) != FF(3)) ++ret;
 
   }
 
@@ -952,7 +952,7 @@ static void simplify_trace(u64* mem) {
 
     } else *mem = 0x0101010101010101ULL;
 
-    mem++;
+    ++mem;
 
   }
 
@@ -979,7 +979,7 @@ static void simplify_trace(u32* mem) {
 
     } else *mem = 0x01010101;
 
-    mem++;
+    ++mem;
   }
 
 }
@@ -1027,7 +1027,7 @@ static inline void classify_counts(u64* mem) {
 
     }
 
-    mem++;
+    ++mem;
 
   }
 
@@ -1054,7 +1054,7 @@ static inline void classify_counts(u32* mem) {
 
     }
 
-    mem++;
+    ++mem;
 
   }
 
@@ -1077,16 +1077,12 @@ static void remove_shm(void) {
    new paths. */
 
 static void minimize_bits(u8* dst, u8* src) {
-
   u32 i = 0;
 
   while (i < MAP_SIZE) {
-
     if (*(src++)) dst[i >> 3] |= 1 << (i & 7);
-    i++;
-
+        ++i;
   }
-
 }
 
 
@@ -8385,14 +8381,14 @@ int main(int argc, char** argv) {
 
     if (!queue_cur) {
 
-      queue_cycle++;
+      ++queue_cycle;
       current_entry     = 0;
       cur_skipped_paths = 0;
       queue_cur         = queue;
 
       while (seek_to) {
-        current_entry++;
-        seek_to--;
+        ++current_entry;
+        --seek_to;
         queue_cur = queue_cur->next;
       }
 
@@ -8408,7 +8404,7 @@ int main(int argc, char** argv) {
 
       if (queued_paths == prev_queued) {
 
-        if (use_splicing) cycles_wo_finds++; else use_splicing = 1;
+        if (use_splicing) ++cycles_wo_finds; else use_splicing = 1;
 
       } else cycles_wo_finds = 0;
 
@@ -8431,7 +8427,7 @@ int main(int argc, char** argv) {
     if (stop_soon) break;
 
     queue_cur = queue_cur->next;
-    current_entry++;
+    ++current_entry;
 
   }
 
